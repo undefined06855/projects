@@ -2,42 +2,150 @@
 
 <html dir="ltr" lang="en">
     <head>
-        <title>vroom vroom</title>
+        <title>My projects... I guess?</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <style>
             * {
                 margin: 0;
                 padding: 0;
                 font-family: "Courier New", Courier, monospace;
+
+                user-select: none;
+
+                --width: 6;
             }
 
             html, body, #wrapper {
+                width: 100vw;
+                height: 100vh;
+
+                max-width: 100vw;
+                max-height: 100vh;
+            }
+
+            #repo_wrapper {
+                flex-wrap: wrap;
+                max-width: 100%;
+                justify-content: center;
+            }
+
+            #repo_wrapper > * {
+                width: 200px;
+                height: 100px;
+                box-sizing: border-box;
+
+                border: 2px solid rgb(0, 0, 0);
+                border-radius: 5px;
+                padding: 10px;
+
+                margin: 20px 10px;
+
+                transition: scale .2s ease, rotate .2s ease;
+
+                overflow: hidden;
+
+                cursor: pointer;
+            }
+
+            #repo_wrapper > *:hover {
+                scale: 1.2;
+            }
+
+            .row {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .column {
+                display: flex;
+                flex-direction: column;
+
                 width: 100%;
-                height: 100%;
+            }
+
+            .column > * {
+                width: unset !important;
             }
 
             #wrapper {
                 display: flex;
-                justify-content: center;
+                justify-content: flex-start;
                 align-items: center;
+                flex-direction: column;
+
+                text-align: center;
+
+                overflow-x: hidden;
+                overflow-y: scroll;
 
                 background-color: rgb(202, 202, 202);
             }
 
-            canvas {
-                background-color: rgb(255, 255, 255);
+            h1 {
+                margin-top: 20px;
+            }
 
-                height: 80vh;
-                aspect-ratio: 16 / 9;
+            #corner_image, #corner_click, #corner_label {
+                position: fixed;
+                z-index: 200;
+                cursor: pointer;
+            }
+
+            #corner_image {
+                bottom: -8px;
+                left: -8px;
+
+                background-image: url("GitHub-Mark-Light-64px.png");
+                width: 64px;
+                height: 64px;
+
+                scale: 0.6;
+            }
+
+            #corner_click {
+                bottom: -50px;
+                left: -360px;
+
+                width: 800px;
+                height: 80px;
+                
+                background-color: rgb(8, 60, 138);
+
+                rotate: 45deg;
+            }
+
+            #corner_label {
+                display: none;
+            }
+
+            #corner_click:hover ~ #corner_label, #corner_image:hover ~ #corner_label {
+                display: block;
+                bottom: 50px;
+                left: 50px;
+
+                background-color: rgba(0, 0, 0, 0.75);
+                color: rgb(245, 245, 245);
+
+                padding: 10px;
+                border-radius: 5px;
             }
         </style>
     </head>
 
     <body>
         <div id="wrapper">
-            <canvas width="1920" height="1080">Your browser does not support html canvas.</canvas>
+            <h1>My projects</h1>
+            <h5>Most of these aren't very good, and are just tests...</h5>
+            <div id="repo_wrapper" class="row"></div>
         </div>
+        
+        <div id="corner_click"></div>
+        <div id="corner_image"></div>
+        <div id="corner_label">My Github</div>
 
+        <script src="repo.js"></script>
         <script src="main.js"></script>
     </body>
 </html>
