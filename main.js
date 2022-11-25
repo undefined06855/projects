@@ -50,6 +50,7 @@ function openDetailedRepoView(id)
         }
         else
         {
+            document.getElementById("repopage").href = ""
             document.getElementById("repopage").style.opacity = "0.5"
             document.getElementById("repopage").style.cursor = "default"
         }
@@ -65,7 +66,7 @@ function openDetailedRepoView(id)
         setTimeout(() => { document.getElementById("lower2").style.translate = "0"   }, 800)
         setTimeout(() => { document.getElementById("lower").style.translate = "0"    }, 2500)
     
-        document.addEventListener("keyup", event => closeDetailedRepoView(event))
+        document.addEventListener("keyup", closeDetailedRepoView)
 
         console.log("Opened detailed view for %s", repo.name)
 
@@ -129,7 +130,7 @@ req.onreadystatechange = () => {
 
         document.head.appendChild(stylesheet)
     }
-    else console.log("state changed") 
+    else console.log("state changed to %s", req.status) 
 }
 
 req.open("get", "https://api.github.com/users/undefined06855/repos")
@@ -166,3 +167,13 @@ document.getElementById("corner_image").addEventListener("click", () =>
 document.getElementById("corner_click").addEventListener("click", () => 
     window.location.href = "https://github.com/undefined06855"
 )
+
+setTimeout(() => {
+    console.log("checking if wifi bad... %s", document.getElementById("repo_wrapper").children.length === 0 ? "yeah..." : "nope!" )
+    if (document.getElementById("repo_wrapper").children.length === 0)
+    {
+        document.getElementById("repo_wrapper").classList.remove("row")
+        document.getElementById("repo_wrapper").classList.add("column")
+        document.getElementById("repo_wrapper").innerHTML = "There was an unknown error when trying to load my projects.<br/>In the meantime, try my Github instead.<a href=\"https://www.github.com/undefined06855\">Github</a>"
+    }
+}, 5000)
