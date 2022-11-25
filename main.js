@@ -1,10 +1,102 @@
 const req = new XMLHttpRequest()
 var json = {}
+  , jsons = []
+
+// #region relativetime
+// https://stackoverflow.com/a/53800501
+var units = {
+    year  : 24 * 60 * 60 * 1000 * 365,
+    month : 24 * 60 * 60 * 1000 * 365/12,
+    day   : 24 * 60 * 60 * 1000,
+    hour  : 60 * 60 * 1000,
+    minute: 60 * 1000,
+    second: 1000
+}
+
+var rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' })
+
+var getRelativeTime = date => {
+    var elapsed = date - new Date()
+
+    // "Math.abs" accounts for both "past" & "future" scenarios
+    for (var u in units) 
+        if (Math.abs(elapsed) > units[u] || u == 'second') 
+            return rtf.format(Math.round(elapsed/units[u]), u)
+}
+//#endregion
+
+function openDetailedRepoView(id)
+{
+    repo = jsons[id]
+
+    document.getElementById("overlay").style.display = "block"
+
+    requestAnimationFrame(() => {
+        document.getElementById("reponame").innerText = repo.name
+        document.getElementById("repodesc").innerText = repo.description === null ? "(No description provided)" : repo.description
+        document.getElementById("repotime").innerText = 
+        "Last updated " + getRelativeTime(new Date(repo.pushed_at))
+        document.getElementById("repocreate").innerText =
+        repo.pushed_at
+        .replaceAll("T", " @ ")
+        .replaceAll("Z", "")
+        document.getElementById("repogit").href = repo.html_url
+        
+        if (repo.has_pages)
+        {
+            document.getElementById("repopage").href = "https://undefined06855.github.io/" + repo.name
+            document.getElementById("repopage").style.opacity = "1"
+            document.getElementById("repopage").style.cursor = "pointer"
+        }
+        else
+        {
+            document.getElementById("repopage").style.opacity = "0.5"
+            document.getElementById("repopage").style.cursor = "default"
+        }
+        
+        document.getElementById("repoid").innerText = repo.id
+    
+    
+        document.getElementById("overlay").style.opacity = "1"
+        document.getElementById("reponame").style.translate = "0"
+        document.getElementById("repodesc").style.translate = "0"
+        document.getElementById("repoid").style.translate = "0"
+        document.getElementById("repotime").style.translate = "0"
+        document.getElementById("lower").style.translate = "0"
+        document.getElementById("lower2").style.translate = "0"
+    
+        document.addEventListener("keyup", event => closeDetailedRepoView(event))
+
+        console.log("Opened detailed view for %s", repo.name)
+
+    })
+}
+
+function closeDetailedRepoView(ev)
+{
+    console.log(ev.key)
+    if (ev.key == "Escape")
+    {
+        document.removeEventListener("keyup", closeDetailedRepoView)
+
+        document.getElementById("overlay").style.display = "none"
+        document.getElementById("overlay").style.opacity = "0"
+
+        document.getElementById("reponame").style.translate = "-100%"
+        document.getElementById("repodesc").style.translate = "-100%"
+        document.getElementById("repoid").style.translate = "-100%"
+        document.getElementById("repotime").style.translate = "-100%"
+        document.getElementById("lower").style.translate = "-100%"
+        document.getElementById("lower2").style.translate = "100%"
+    }
+}
 
 req.onreadystatechange = () => {
     if (req.readyState == 4 && req.status == 200)
     {
         console.log("Request successful.")
+
+        document.getElementById("repo_wrapper").innerHTML = ""
 
         json = JSON.parse(req.response)
 
@@ -12,8 +104,9 @@ req.onreadystatechange = () => {
 
         var repid = 0
         json.forEach(repo => {
-            if (!(repo.fork || repo.name === "undefined06855" || repo.name === "projects" || repo.archived || repo.private))
+            if (!(repo.fork || repo.archived || repo.private))
             {
+                jsons.push(repo)
                 console.log(repo)
                 document.getElementById("repo_wrapper").innerHTML +=
                 reponame
@@ -21,6 +114,7 @@ req.onreadystatechange = () => {
                 .replaceAll("[[DESC]]", repo.description === null ? "(No description provided)" : repo.description)
                 .replaceAll("[[ID]]", repid)
                 .replaceAll("[[URL]]", repo.html_url)
+                .replaceAll("[[JSON]]", JSON.stringify(repo))
 
                 stylesheet.textContent +=
                 style
@@ -30,7 +124,7 @@ req.onreadystatechange = () => {
 
                 repid++
             }
-            else {console.log("Declined repo %s", repo.name)}
+            else {console.log("Rejected repo %s", repo.name)}
         })
 
         document.head.appendChild(stylesheet)
@@ -42,7 +136,7 @@ req.open("get", "https://api.github.com/users/undefined06855/repos")
 req.send()
 
 window.addEventListener("resize", () => {
-    if (document.body.offsetWidth < 450)
+    if (document.body.offsetWidth < 500)
     {
         document.getElementById("repo_wrapper").classList.remove("row")
         document.getElementById("repo_wrapper").classList.add   ("column")
@@ -54,7 +148,7 @@ window.addEventListener("resize", () => {
     }
 })
 
-if (document.body.offsetWidth < 450)
+if (document.body.offsetWidth < 500)
 {
     document.getElementById("repo_wrapper").classList.remove("row")
     document.getElementById("repo_wrapper").classList.add   ("column")

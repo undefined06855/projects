@@ -117,12 +117,13 @@
             }
 
             #corner_label {
-                display: none;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity .3s linear .5s;
             }
 
-            #corner_click:hover ~ #corner_label,
-            #corner_image:hover ~ #corner_label {
-                display: block;
+            #corner_click:hover ~ #corner_label, #corner_image:hover ~ #corner_label {
+                opacity: 1;
                 bottom: 50px;
                 left: 50px;
 
@@ -132,6 +133,131 @@
                 padding: 10px;
                 border-radius: 5px;
             }
+
+            #overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+
+                width: 100vw;
+                height: 100vh;
+
+                box-sizing: border-box;
+
+                background-color: rgba(0, 0, 0, 0.75);
+
+                color: rgb(245, 245, 245);
+
+                padding: 60px;
+
+                z-index: 300;
+
+                transition: opacity .5s linear
+            }
+
+            #reponame {
+                font-size: 60px;
+            }
+
+            #repodesc {
+                font-size: 30px;
+            }
+
+            #repogit, #repopage {
+                font-size: 15px;
+            }
+
+            #overlay > * {
+                transition: all 1s ease-out;
+                max-width: 100%;
+                word-wrap: break-word;
+            }
+
+            #lower {
+                position: fixed;
+                bottom: 60px;
+                left: 60px;
+            }
+
+            #lower2 {
+                position: fixed;
+                bottom: 60px;
+                right: -100px;
+
+                width: 500px;
+
+                display: flex;
+                flex-direction: column;
+            }
+
+            #lower2 > * {
+                text-align: left;
+                font-size: 30px;
+                max-width: 100%;
+
+                padding: 50px 20px;
+
+                border: 2px solid rgb(245, 245, 245);
+                border-radius: 5px;
+
+                color: rgb(255, 255, 255);
+                text-decoration: none;
+
+                transition: all .25s ease-out;
+            }
+
+            #lower2 > *:hover {
+                translate: -10%;
+            }
+
+            #exit {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+            }
+
+            #exit::after {
+                content: "< exit";
+                font-size: 25px;
+            }
+
+            a {
+                font-size: 20px
+            }
+
+            .tall {
+                height: 60px;
+            }
+
+            @media screen and (max-width: 500px) {
+                #reponame {
+                    font-size: 25px;
+                }
+
+                #repodesc {
+                    font-size: 20px;
+                }
+
+                a {
+                    font-size: 5px  
+                }
+
+                #lower2 {
+                    width: 100vw;
+                }
+
+                #lower2 > * {
+                    font-size: 25px;
+                    left: 0;
+                    right: 0;
+                }
+
+                #lower {
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                }
+            }
         </style>
     </head>
 
@@ -139,12 +265,33 @@
         <div id="wrapper">
             <h1>My projects</h1>
             <h5>Most of these aren't very good, and are just tests...</h5>
-            <div id="repo_wrapper" class="row"></div>
+            <div id="repo_wrapper" class="row">Loading...</div>
         </div>
         
         <div id="corner_click"></div>
-        <div id="corner_image"></div>
+        <div id="corner_image" tabindex="0"></div>
         <div id="corner_label">My Github</div>
+
+        <div id="overlay" style="display: none; opacity: 0;">
+            <div id="reponame" style="translate: -100%;">[[NAME]]</div>
+            <div id="repodesc" style="translate: -100%;">[[DESC]]</div>
+            <div id="repotime" style="translate: -100%;">[[LAST_UPDATED]]</div>
+
+            <div class="tall"></div>
+
+            <div id="lower2" style="translate: 100%;">
+                <a id="repogit">View source</a><br/>
+                <a id="repopage" href="#">View Page</a>
+            </div>
+
+            <div id="lower" style="translate: -100%;">
+                ID: <span id="repoid">[[ID]]</span>
+                <br/>
+                Created at: <span id="repocreate">[[CREATE_TIME]]</span>
+            </div>
+
+            <div id="exit" onclick="closeDetailedRepoView({key: 'Escape'})"></div>
+        </div>
 
         <script src="repo.js"></script>
         <script src="main.js"></script>

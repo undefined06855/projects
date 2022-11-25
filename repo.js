@@ -1,6 +1,6 @@
 const reponame =
 `
-<div class="repo_[[ID]]" onclick="window.location.href='[[URL]]'" tabindex="0">
+<div class="repo_[[ID]]" onclick="openDetailedRepoView([[ID]])" tabindex="0">
     <h3>[[TITLE]]</h3>
     <h6>[[DESC]]</h6>
 </div>
