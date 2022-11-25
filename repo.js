@@ -6,7 +6,6 @@ const reponame =
 </div>
 `
 
-
 const style =
 `
 .repo_[[ID]] {

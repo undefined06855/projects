@@ -119,7 +119,7 @@
             #corner_label {
                 opacity: 0;
                 pointer-events: none;
-                transition: opacity .3s linear .5s;
+                transition: opacity .25s linear .5s;
             }
 
             #corner_click:hover ~ #corner_label, #corner_image:hover ~ #corner_label {
@@ -168,9 +168,10 @@
             }
 
             #overlay > * {
-                transition: all 1s ease-out;
+                transition: all 1s cubic-bezier(0, 0, 0.5, 1.5);
                 max-width: 100%;
                 word-wrap: break-word;
+                margin-bottom: 15px;
             }
 
             #lower {
@@ -203,7 +204,7 @@
                 color: rgb(255, 255, 255);
                 text-decoration: none;
 
-                transition: all .25s ease-out;
+                transition: inherit;
             }
 
             #lower2 > *:hover {
@@ -273,18 +274,18 @@
         <div id="corner_label">My Github</div>
 
         <div id="overlay" style="display: none; opacity: 0;">
-            <div id="reponame" style="translate: -100%;">[[NAME]]</div>
-            <div id="repodesc" style="translate: -100%;">[[DESC]]</div>
-            <div id="repotime" style="translate: -100%;">[[LAST_UPDATED]]</div>
+            <div id="reponame" style="translate: -150%;">[[NAME]]</div>
+            <div id="repodesc" style="translate: -150%;">[[DESC]]</div>
+            <div id="repotime" style="translate: -150%;">[[LAST_UPDATED]]</div>
 
             <div class="tall"></div>
 
-            <div id="lower2" style="translate: 100%;">
+            <div id="lower2" style="translate: 150%;">
                 <a id="repogit">View source</a><br/>
                 <a id="repopage" href="#">View Page</a>
             </div>
 
-            <div id="lower" style="translate: -100%;">
+            <div id="lower" style="translate: -150%;">
                 ID: <span id="repoid">[[ID]]</span>
                 <br/>
                 Created at: <span id="repocreate">[[CREATE_TIME]]</span>

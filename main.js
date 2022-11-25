@@ -58,12 +58,12 @@ function openDetailedRepoView(id)
     
     
         document.getElementById("overlay").style.opacity = "1"
-        document.getElementById("reponame").style.translate = "0"
-        document.getElementById("repodesc").style.translate = "0"
-        document.getElementById("repoid").style.translate = "0"
-        document.getElementById("repotime").style.translate = "0"
-        document.getElementById("lower").style.translate = "0"
-        document.getElementById("lower2").style.translate = "0"
+        setTimeout(() => { document.getElementById("reponame").style.translate = "0" }, 0)
+        setTimeout(() => { document.getElementById("repodesc").style.translate = "0" }, 200)
+        setTimeout(() => { document.getElementById("repoid").style.translate = "0"   }, 400)
+        setTimeout(() => { document.getElementById("repotime").style.translate = "0" }, 600)
+        setTimeout(() => { document.getElementById("lower2").style.translate = "0"   }, 800)
+        setTimeout(() => { document.getElementById("lower").style.translate = "0"    }, 2500)
     
         document.addEventListener("keyup", event => closeDetailedRepoView(event))
 
@@ -82,12 +82,12 @@ function closeDetailedRepoView(ev)
         document.getElementById("overlay").style.display = "none"
         document.getElementById("overlay").style.opacity = "0"
 
-        document.getElementById("reponame").style.translate = "-100%"
-        document.getElementById("repodesc").style.translate = "-100%"
-        document.getElementById("repoid").style.translate = "-100%"
-        document.getElementById("repotime").style.translate = "-100%"
-        document.getElementById("lower").style.translate = "-100%"
-        document.getElementById("lower2").style.translate = "100%"
+        document.getElementById("reponame").style.translate = "-150%"
+        document.getElementById("repodesc").style.translate = "-150%"
+        document.getElementById("repoid").style.translate = "-150%"
+        document.getElementById("repotime").style.translate = "-150%"
+        document.getElementById("lower").style.translate = "-150%"
+        document.getElementById("lower2").style.translate = "150%"
     }
 }
 
