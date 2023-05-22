@@ -133,7 +133,7 @@ req.onreadystatechange = () => {
     else console.log("state changed to %s", req.status) 
 }
 
-req.open("get", "https://api.github.com/users/undefined06855/repos")
+req.open("get", "https://api.github.com/users/undefined06855/repos?per_page=100")
 req.send()
 
 window.addEventListener("resize", () => {
